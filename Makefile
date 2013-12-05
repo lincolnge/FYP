@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/local/Cellar/cmake/2.8.11.2/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/wanggengzhou/Desktop/work/project/FYP/face_detection
+CMAKE_SOURCE_DIR = /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/wanggengzhou/Desktop/work/project/FYP/face_detection
+CMAKE_BINARY_DIR = /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -72,9 +72,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/wanggengzhou/Desktop/work/project/FYP/face_detection/CMakeFiles /Users/wanggengzhou/Desktop/work/project/FYP/face_detection/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/CMakeFiles /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/wanggengzhou/Desktop/work/project/FYP/face_detection/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

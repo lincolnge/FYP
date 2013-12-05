@@ -1,4 +1,4 @@
-# Install script for directory: /Users/wanggengzhou/Desktop/work/project/FYP/face_detection
+# Install script for directory: /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -33,7 +33,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "/Users/wanggengzhou/Desktop/work/project/FYP/face_detection/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "/Users/wanggengzhou/Desktop/work/project/FYP/face_detection/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

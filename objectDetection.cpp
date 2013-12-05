@@ -5,6 +5,8 @@
 #include <iostream>
 #include <stdio.h>
 
+#include <time.h>
+
 using namespace std;
 using namespace cv;
 
@@ -55,16 +57,27 @@ void detectAndDisplay( Mat frame )
     std::vector<Rect> faces;
     Mat frame_gray;
 
+    bool isSafe = 0;
+    isSafe = "unSafe";
+    String box_text = "";
+
     cvtColor( frame, frame_gray, COLOR_BGR2GRAY );
     equalizeHist( frame_gray, frame_gray );
 
     //-- Detect faces
     face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CASCADE_SCALE_IMAGE, Size(30, 30) );
 
+    if (faces.size() > 1 || faces.size() == 0)
+        isSafe = 1;
+    else
+        isSafe = 0;
+    box_text = format("Faces is %d  %s", faces.size(), (isSafe) ? "Safe" : "unSafe" );
+    putText(frame, box_text, Point(10, 10), FONT_HERSHEY_PLAIN, 1.0, (isSafe) ? CV_RGB(0, 255, 0) : CV_RGB(255, 0, 0), 2.0);
+
     for ( size_t i = 0; i < faces.size(); i++ )
     {
         Point center( faces[i].x + faces[i].width/2, faces[i].y + faces[i].height/2 );
-        ellipse( frame, center, Size( faces[i].width/2, faces[i].height/2 ), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
+        ellipse( frame, center, Size( faces[i].width/2, faces[i].height/2 ), 0, 0, 360, (isSafe) ? Scalar( 0, 255, 255 ) : Scalar( 255, 0, 255 ), 4, 8, 0 );
 
         Mat faceROI = frame_gray( faces[i] );
         std::vector<Rect> eyes;
@@ -76,7 +89,7 @@ void detectAndDisplay( Mat frame )
         {
             Point eye_center( faces[i].x + eyes[j].x + eyes[j].width/2, faces[i].y + eyes[j].y + eyes[j].height/2 );
             int radius = cvRound( (eyes[j].width + eyes[j].height)*0.25 );
-            circle( frame, eye_center, radius, Scalar( 255, 0, 0 ), 4, 8, 0 );
+            // circle( frame, eye_center, radius, Scalar( 255, 0, 0 ), 4, 8, 0 );
         }
     }
     //-- Show what you got

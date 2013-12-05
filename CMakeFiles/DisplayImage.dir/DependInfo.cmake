@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/wanggengzhou/Desktop/work/project/FYP/face_detection/objectDetection.cpp" "/Users/wanggengzhou/Desktop/work/project/FYP/face_detection/CMakeFiles/DisplayImage.dir/objectDetection.cpp.o"
+  "/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/objectDetection.cpp" "/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/CMakeFiles/DisplayImage.dir/objectDetection.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "Clang")
 

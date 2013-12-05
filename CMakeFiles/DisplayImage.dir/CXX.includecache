@@ -6,16 +6,18 @@
 
 #IncludeRegexTransform: 
 
-/Users/wanggengzhou/Desktop/work/project/FYP/face_detection/objectDetection.cpp
+/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/objectDetection.cpp
 opencv2/objdetect/objdetect.hpp
-/Users/wanggengzhou/Desktop/work/project/FYP/face_detection/opencv2/objdetect/objdetect.hpp
+/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/opencv2/objdetect/objdetect.hpp
 opencv2/highgui/highgui.hpp
-/Users/wanggengzhou/Desktop/work/project/FYP/face_detection/opencv2/highgui/highgui.hpp
+/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/opencv2/highgui/highgui.hpp
 opencv2/imgproc/imgproc.hpp
-/Users/wanggengzhou/Desktop/work/project/FYP/face_detection/opencv2/imgproc/imgproc.hpp
+/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/opencv2/imgproc/imgproc.hpp
 iostream
 -
 stdio.h
+-
+time.h
 -
 
 /usr/local/include/opencv2/core/core.hpp
