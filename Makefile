@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/local/Cellar/cmake/2.8.11.2/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1
+CMAKE_SOURCE_DIR = /Users/wanggengzhou/Desktop/work/project/FYP/isSafe_part2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1
+CMAKE_BINARY_DIR = /Users/wanggengzhou/Desktop/work/project/FYP/isSafe_part2
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -72,9 +72,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/CMakeFiles /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/wanggengzhou/Desktop/work/project/FYP/isSafe_part2/CMakeFiles /Users/wanggengzhou/Desktop/work/project/FYP/isSafe_part2/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/wanggengzhou/Desktop/work/project/FYP/isSafe_part2/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -114,29 +114,29 @@ DisplayImage/fast:
 	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/build
 .PHONY : DisplayImage/fast
 
-objectDetection.o: objectDetection.cpp.o
-.PHONY : objectDetection.o
+DisplayImage.o: DisplayImage.cpp.o
+.PHONY : DisplayImage.o
 
 # target to build an object file
-objectDetection.cpp.o:
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/objectDetection.cpp.o
-.PHONY : objectDetection.cpp.o
+DisplayImage.cpp.o:
+	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/DisplayImage.cpp.o
+.PHONY : DisplayImage.cpp.o
 
-objectDetection.i: objectDetection.cpp.i
-.PHONY : objectDetection.i
+DisplayImage.i: DisplayImage.cpp.i
+.PHONY : DisplayImage.i
 
 # target to preprocess a source file
-objectDetection.cpp.i:
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/objectDetection.cpp.i
-.PHONY : objectDetection.cpp.i
+DisplayImage.cpp.i:
+	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/DisplayImage.cpp.i
+.PHONY : DisplayImage.cpp.i
 
-objectDetection.s: objectDetection.cpp.s
-.PHONY : objectDetection.s
+DisplayImage.s: DisplayImage.cpp.s
+.PHONY : DisplayImage.s
 
 # target to generate assembly for a file
-objectDetection.cpp.s:
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/objectDetection.cpp.s
-.PHONY : objectDetection.cpp.s
+DisplayImage.cpp.s:
+	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/DisplayImage.cpp.s
+.PHONY : DisplayImage.cpp.s
 
 # Help Target
 help:
@@ -147,9 +147,9 @@ help:
 	@echo "... DisplayImage"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... objectDetection.o"
-	@echo "... objectDetection.i"
-	@echo "... objectDetection.s"
+	@echo "... DisplayImage.o"
+	@echo "... DisplayImage.i"
+	@echo "... DisplayImage.s"
 .PHONY : help
 
 

@@ -1,1 +1,1 @@
-/Users/wanggengzhou/Desktop/work/project/FYP/face_detection_part1/CMakeFiles/DisplayImage.dir
+/Users/wanggengzhou/Desktop/work/project/FYP/isSafe_part2/CMakeFiles/DisplayImage.dir
