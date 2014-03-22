@@ -1,23 +1,25 @@
+Smart Home Baby Monitoring System
 
-## Smart Home Baby Monitoring System
+========
 
-=====
-
-### Part one:
-
+Part one:
+--------
 (Human) Face detection and recognition
 
-### Part two:
-
+Part two:
+--------
 Unsafe area alarm
 
-### Part three:
-
+Part three:
+--------
 Distance Monitoring
 
-====
+========
 
-The repository has only finished part one and part two.
+The Repository has only finished part one and part two.
+Part three using the Repository in:
+* SocketServer: https://github.com/lincolnge/SocketSever  
+* SocketClient: https://github.com/lincolnge/SocketClient  
 
 Paltform: C++
 

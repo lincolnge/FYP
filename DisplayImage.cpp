@@ -1,15 +1,11 @@
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-
-#include <iostream>
-#include <stdio.h>
-
-using namespace std;
-using namespace cv;
+#include "SubFunc.hpp"
 
 /** Function Headers */
 void detectAndDisplay( Mat frame, String argv );
+bool isSafeInQuadrangle( Mat frame, int X_axis, int Y_axis );
+
+bool isSafeFunc(Mat frame, Point cen);
+
 
 /** Global variables */
 String face_cascade_name = "haarcascade_frontalface_alt.xml";
@@ -21,6 +17,33 @@ String window_name = "Capture - Face detection";
 String windows_text = "";
 Rect unsafe_area = Rect(400, 400, 200, 200);
 String box_text = format("UNSAFE AREA");
+
+Point p1 = Point(0,0);
+Point p2 = Point(0,0);
+Point p3 = Point(0,0);
+Point p4 = Point(0,0);
+
+// 定义四个点
+Point p[4];
+
+Point2f point;
+// show the mouse position
+int i = 0;
+
+void onMouse( int event, int x, int y, int /*flags*/, void* /*param*/ )
+{
+  if( event == CV_EVENT_LBUTTONDOWN )
+  {
+    point = Point2f((float)x, (float)y);
+    printf("%d %d \n", x, y);
+    // set point
+    if ( i < 4 ) 
+    {
+      p[i] = Point(x,y);
+      i = i + 1;
+    }
+  }
+}
 
 /** @function main */
 int main( int argc, const char *argv[] )
@@ -38,40 +61,33 @@ int main( int argc, const char *argv[] )
   capture.open( -1 );
   if ( ! capture.isOpened() ) { printf("--(!)Error opening video capture\n"); return -1; }
 
-  while ( capture.read(frame) )
+  p1 = Point(400,100);
+  p2 = Point(700,100);
+  p3 = Point(600,400);
+  p4 = Point(300,400);
+  
+
+  // while ( capture.read(frame) )
+  while(1)
   {
+    capture >> frame;
     if( frame.empty() )
     {
       printf(" --(!) No captured frame -- Break!");
       break;
     }
 
+    // set the mouse callback function. 
+    setMouseCallback( window_name, onMouse, 0 );
+
     //-- 3. Apply the classifier to the frame
     detectAndDisplay( frame, string(argv[1]) );
+    imshow( window_name, frame );
 
     int c = waitKey(10);
     if( (char)c == 27 ) { break; } // escape
   }
   return 0;
-}
-
-void liner_equation( Point p )
-{
-  Point p1 = Point(300,100);
-  Point p4 = Point(600,100);
-  Point p3 = Point(500,400);
-  Point p2 = Point(200,400);
-
-  float b = 0.00, k = 0.00;
-  b = ( p1.y * p2.x - p2.y * p1.x ) / ( p2.x - p1.x );
-  k = ( p1.y - p2.y ) / ( p1.x - p2.x );
-  float A1 = k, B1 = -1, C1 = b;
-  b = ( p3.y * p4.x - p4.y * p3.x ) / ( p4.x - p3.x );
-  k = ( p3.y - p4.y ) / ( p3.x - p4.x );
-  float A2 = k, B2 = -1, C2 = b;
-
-  if (( A1 * p.x + B1 * p.y + C1 ) * ( A2 * p.x + B2 * p.y + C2 ) < 0 || true )
-    printf("It is on the inside of parallelogram!");
 }
 
 /** @function detectAndDisplay */
@@ -82,32 +98,16 @@ void detectAndDisplay( Mat frame, String argv )
 
   bool isNotWarning = 0;
   bool isSafe = 0;
+  int X_axis = 0;
+  int Y_axis = 0;
 
   cvtColor( frame, frame_gray, COLOR_BGR2GRAY );
   equalizeHist( frame_gray, frame_gray );
 
   //-- Detect faces
   face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CASCADE_SCALE_IMAGE, Size(30, 30) );
-  
-  Point p1 = Point(400,100);
-  Point p2 = Point(700,100);
-  Point p3 = Point(600,400);
-  Point p4 = Point(300,400);
-
-  vector<Point> contour;
-  contour.push_back(p1);  // X-axis, Y-axis
-  contour.push_back(p2);
-  contour.push_back(p3);
-  contour.push_back(p4);
-  const cv::Point *pts = (const cv::Point*) Mat(contour).data;
-  int npts = Mat(contour).rows;
 
   if ( argv == "2" ) {
-    polylines(frame, &pts,&npts, 1,
-      true,             // draw closed contour (i.e. joint end to start) 
-      Scalar(0,255,0),  // colour RGB ordering (here = green) 
-      3,                // line thickness
-      CV_AA, 0);
   } else {
     // unsafe area
     rectangle(frame, unsafe_area, CV_RGB(255, 0, 0), 3);
@@ -123,40 +123,27 @@ void detectAndDisplay( Mat frame, String argv )
 
   for ( size_t i = 0; i < faces.size(); i++ )
   {
-    int X_axis = 0;
-    int Y_axis = 0;
+
     X_axis = faces[i].x + faces[i].width/2;
     Y_axis = faces[i].y + faces[i].height/2;
 
-    // Test the parallelogram
-    float b = 0.00, k = 0.00;
-    b = ( p1.y * p4.x - p4.y * p1.x ) / ( p4.x - p1.x );
-    k = ( p1.y - p4.y ) / ( p1.x - p4.x );
-    float A1 = k, B1 = -1, C1 = b;
-    b = ( p3.y * p2.x - p2.y * p3.x ) / ( p2.x - p3.x );
-    k = ( p3.y - p2.y ) / ( p3.x - p2.x );
-    float A2 = k, B2 = -1, C2 = b;
-
-    Point center( faces[i].x + faces[i].width/2, faces[i].y + faces[i].height/2 );
-
     if ( argv == "2" ) {
-      if (( A1 * X_axis + B1 * Y_axis + C1 ) * ( A2 * X_axis + B2 * Y_axis + C2 ) < 0 \
-        && Y_axis > p1.y && Y_axis < p4.y ) {
-        printf("It is inside the parallelogram! \a\n");
-        isSafe = 0;
-      } else 
-        isSafe = 1;
-    }
-    else {    
+      // isSafe = isSafeInQuadrangle( frame, X_axis, Y_axis );
+      isSafe = isSafeFunc( frame, Point(X_axis, Y_axis) );
+    } else {
       if( X_axis > unsafe_area.x && X_axis < unsafe_area.x + unsafe_area.width \
         && Y_axis > unsafe_area.y && Y_axis < unsafe_area.y + unsafe_area.height)
       {  
-        printf("warnnning \a\n");
+        printf("Warnnning \a\n");
         isSafe = 0;
       }
       else
         isSafe = 1;
     }
+
+    // The midpoint of circle
+    Point center( faces[i].x + faces[i].width/2, faces[i].y + faces[i].height/2 );
+
     putText(frame, windows_text, Point(20, 600), FONT_HERSHEY_PLAIN, 2.0, (isSafe) ? CV_RGB(0, 255, 0) : CV_RGB(255, 0, 0), 2.0);
     circle( frame, center, 3, Scalar(0, 255, 0), -1, 8, 0 );
     // Scalar(0, 255, 255) is yellow; Scalar( 0, 0, 255 )) is red
@@ -178,4 +165,92 @@ void detectAndDisplay( Mat frame, String argv )
   }
   //-- Show what you got
   imshow( window_name, frame );
+}
+
+
+bool isSafeFunc(Mat frame, Point cen)
+{
+  p[0] = Point(100,100);
+  p[1] = Point(300,100);
+  p[2] = Point(300,300);
+  p[3] = Point(100,300);
+
+  int quadArea = 0;
+  int cenQuaArea = 0;
+  quadArea = triAreaPit(p[0], p[1], p[2]) + triAreaPit(p[0], p[3], p[2]);
+
+  for (int i = 0; i < 3; ++i)
+  {
+    cenQuaArea = cenQuaArea + triAreaPit(cen, p[i], p[i+1]);
+  }
+  cenQuaArea = cenQuaArea + triAreaPit(cen, p[0], p[3]);
+
+  vector<Point> contour;
+  contour.push_back(p[0]);  // X-axis, Y-axis
+  contour.push_back(p[1]);
+  contour.push_back(p[2]);
+  contour.push_back(p[3]);
+  const cv::Point *pts = (const cv::Point*) Mat(contour).data;
+  int npts = Mat(contour).rows;
+
+  circle( frame, cen, 3, Scalar(0, 255, 0), -1, 8, 0 );
+  // todo: 初始化为0时, 不显示
+  polylines(frame, &pts,&npts, 1,
+    true,             // draw closed contour (i.e. joint end to start) 
+    Scalar(0,255,0),  // colour RGB ordering (here = green) 
+    3,                // line thickness
+    CV_AA, 0);
+
+  printf("%d : %d\n", quadArea, cenQuaArea);
+  if (quadArea > cenQuaArea) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+bool isSafeInQuadrangle( Mat frame, int X_axis, int Y_axis )
+{
+  // clockwise
+  // Point p1 = Point(400,100);
+  // Point p2 = Point(700,100);
+  // Point p3 = Point(600,400);
+  // Point p4 = Point(300,400);
+
+  vector<Point> contour;
+  contour.push_back(p[0]);  // X-axis, Y-axis
+  contour.push_back(p[1]);
+  contour.push_back(p[2]);
+  contour.push_back(p[3]);
+  printf("p[0] %d %d\n", p[0].x, p[0].y);
+  printf("p[1] %d %d\n", p[1].x, p[1].y);
+  printf("p[2] %d %d\n", p[2].x, p[2].y);
+  printf("p[3] %d %d\n", p[3].x, p[3].y);
+
+  const cv::Point *pts = (const cv::Point*) Mat(contour).data;
+  int npts = Mat(contour).rows;
+
+  // todo: 初始化为0时, 不显示
+  polylines(frame, &pts,&npts, 1,
+    true,             // draw closed contour (i.e. joint end to start) 
+    Scalar(0,255,0),  // colour RGB ordering (here = green) 
+    3,                // line thickness
+    CV_AA, 0);
+
+  float b = 0.00, k = 0.00;
+  float A1 = 0.00, B1 = 0.00, C1 = 0.00;
+  float A2 = 0.00, B2 = 0.00, C2 = 0.00;
+  b = ( p1.y * p4.x - p4.y * p1.x ) / ( p4.x - p1.x );
+  k = ( p1.y - p4.y ) / ( p1.x - p4.x );
+  A1 = k, B1 = -1, C1 = b;
+  b = ( p3.y * p2.x - p2.y * p3.x ) / ( p2.x - p3.x );
+  k = ( p3.y - p2.y ) / ( p3.x - p2.x );
+  A2 = k, B2 = -1, C2 = b;
+
+  if (( A1 * X_axis + B1 * Y_axis + C1 ) * ( A2 * X_axis + B2 * Y_axis + C2 ) < 0 \
+    && Y_axis > p1.y && Y_axis < p4.y ) {
+    printf("It is inside the parallelogram! \a\n");
+    return 0;
+  } else 
+    return 1;
 }
