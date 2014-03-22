@@ -1,94 +1,6 @@
-#include "SubFunc.hpp"
-
-/** Function Headers */
-void detectAndDisplay( Mat frame, String argv );
-bool isSafeInQuadrangle( Mat frame, int X_axis, int Y_axis );
-
-bool isSafeFunc(Mat frame, Point cen);
-
-
-/** Global variables */
-String face_cascade_name = "haarcascade_frontalface_alt.xml";
-String eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
-CascadeClassifier face_cascade;
-CascadeClassifier eyes_cascade;
-String window_name = "Capture - Face detection";
-
-String windows_text = "";
-Rect unsafe_area = Rect(400, 400, 200, 200);
-String box_text = format("UNSAFE AREA");
-
-Point p1 = Point(0,0);
-Point p2 = Point(0,0);
-Point p3 = Point(0,0);
-Point p4 = Point(0,0);
-
-// 定义四个点
-Point p[4];
-
-Point2f point;
-// show the mouse position
-int i = 0;
-
-void onMouse( int event, int x, int y, int /*flags*/, void* /*param*/ )
-{
-  if( event == CV_EVENT_LBUTTONDOWN )
-  {
-    point = Point2f((float)x, (float)y);
-    printf("%d %d \n", x, y);
-    // set point
-    if ( i < 4 ) 
-    {
-      p[i] = Point(x,y);
-      i = i + 1;
-    }
-  }
-}
-
-/** @function main */
-int main( int argc, const char *argv[] )
-{
-  VideoCapture capture;
-  Mat frame;
-  if ( argc != 2 )
-    argv[1] = "1";
-  
-  //-- 1. Load the cascades
-  if( !face_cascade.load( face_cascade_name ) ){ printf("--(!)Error loading face cascade\n"); return -1; };
-  if( !eyes_cascade.load( eyes_cascade_name ) ){ printf("--(!)Error loading eyes cascade\n"); return -1; };
-
-  //-- 2. Read the video stream
-  capture.open( -1 );
-  if ( ! capture.isOpened() ) { printf("--(!)Error opening video capture\n"); return -1; }
-
-  p1 = Point(400,100);
-  p2 = Point(700,100);
-  p3 = Point(600,400);
-  p4 = Point(300,400);
-  
-
-  // while ( capture.read(frame) )
-  while(1)
-  {
-    capture >> frame;
-    if( frame.empty() )
-    {
-      printf(" --(!) No captured frame -- Break!");
-      break;
-    }
-
-    // set the mouse callback function. 
-    setMouseCallback( window_name, onMouse, 0 );
-
-    //-- 3. Apply the classifier to the frame
-    detectAndDisplay( frame, string(argv[1]) );
-    imshow( window_name, frame );
-
-    int c = waitKey(10);
-    if( (char)c == 27 ) { break; } // escape
-  }
-  return 0;
-}
+#include "displayImage.hpp"
+#include "triarea.cpp"
+#include "onMouse.cpp"
 
 /** @function detectAndDisplay */
 void detectAndDisplay( Mat frame, String argv )
@@ -167,13 +79,12 @@ void detectAndDisplay( Mat frame, String argv )
   imshow( window_name, frame );
 }
 
-
 bool isSafeFunc(Mat frame, Point cen)
 {
-  p[0] = Point(100,100);
-  p[1] = Point(300,100);
-  p[2] = Point(300,300);
-  p[3] = Point(100,300);
+  // p[0] = Point(100,100);
+  // p[1] = Point(300,100);
+  // p[2] = Point(300,300);
+  // p[3] = Point(100,300);
 
   int quadArea = 0;
   int cenQuaArea = 0;
@@ -195,11 +106,16 @@ bool isSafeFunc(Mat frame, Point cen)
 
   circle( frame, cen, 3, Scalar(0, 255, 0), -1, 8, 0 );
   // todo: 初始化为0时, 不显示
+  if ( p[3].x != 0) {
   polylines(frame, &pts,&npts, 1,
     true,             // draw closed contour (i.e. joint end to start) 
     Scalar(0,255,0),  // colour RGB ordering (here = green) 
     3,                // line thickness
     CV_AA, 0);
+  }
+
+  // printf("%d %d %d %d\n", p[0].x, p[1].x, p[2].x, p[3].x);
+  // printf("%d %d %d %d\n", p[0].y, p[1].y, p[2].y, p[3].y);
 
   printf("%d : %d\n", quadArea, cenQuaArea);
   if (quadArea > cenQuaArea) {
@@ -216,6 +132,11 @@ bool isSafeInQuadrangle( Mat frame, int X_axis, int Y_axis )
   // Point p2 = Point(700,100);
   // Point p3 = Point(600,400);
   // Point p4 = Point(300,400);
+
+  p[1] = Point(400,100);
+  p[2] = Point(700,100);
+  p[3] = Point(600,400);
+  p[0] = Point(300,400);
 
   vector<Point> contour;
   contour.push_back(p[0]);  // X-axis, Y-axis
