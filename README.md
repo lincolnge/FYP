@@ -2,6 +2,8 @@ Smart Home Baby Monitoring System
 
 ========
 
+You can read the presentation poster from <https://github.com/lincolnge/FYP/blob/master/POSTER.pdf>
+
 Part one:
 --------
 (Human) Face detection and recognition
