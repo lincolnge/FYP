@@ -26,12 +26,12 @@ void detectAndDisplay( Mat frame, String argv )
   }
 
   putText(frame, box_text, Point(unsafe_area.x, unsafe_area.y), FONT_HERSHEY_PLAIN, 1.0, CV_RGB(255, 0, 0), 2.0);
- 
+
   if (faces.size() > 1 || faces.size() == 0)
     isNotWarning = 1;
   else
     isNotWarning = 0;
-  windows_text = format("Faces = %d  %s", faces.size(), (isNotWarning) ? "Safe" : "unSafe" );
+  windows_text = format("Faces = %lu  %s", faces.size(), (isNotWarning) ? "Safe" : "unSafe" );
 
   for ( size_t i = 0; i < faces.size(); i++ )
   {
@@ -45,7 +45,7 @@ void detectAndDisplay( Mat frame, String argv )
     } else {
       if( X_axis > unsafe_area.x && X_axis < unsafe_area.x + unsafe_area.width \
         && Y_axis > unsafe_area.y && Y_axis < unsafe_area.y + unsafe_area.height)
-      {  
+      {
         printf("Warnnning \a\n");
         isSafe = 0;
       }
@@ -108,10 +108,10 @@ bool isSafeFunc(Mat frame, Point cen)
   // todo: 初始化为0时, 不显示
   if ( p[3].x != 0) {
   polylines(frame, &pts,&npts, 1,
-    true,             // draw closed contour (i.e. joint end to start) 
-    Scalar(0,255,0),  // colour RGB ordering (here = green) 
+    true,             // draw closed contour (i.e. joint end to start)
+    Scalar(0,255,0),  // colour RGB ordering (here = green)
     3,                // line thickness
-    CV_AA, 0);
+    cv::LINE_AA, 0);
   }
 
   // printf("%d %d %d %d\n", p[0].x, p[1].x, p[2].x, p[3].x);
@@ -153,10 +153,10 @@ bool isSafeInQuadrangle( Mat frame, int X_axis, int Y_axis )
 
   // todo: 初始化为0时, 不显示
   polylines(frame, &pts,&npts, 1,
-    true,             // draw closed contour (i.e. joint end to start) 
-    Scalar(0,255,0),  // colour RGB ordering (here = green) 
+    true,             // draw closed contour (i.e. joint end to start)
+    Scalar(0,255,0),  // colour RGB ordering (here = green)
     3,                // line thickness
-    CV_AA, 0);
+    cv::LINE_AA, 0);
 
   float b = 0.00, k = 0.00;
   float A1 = 0.00, B1 = 0.00, C1 = 0.00;
@@ -172,6 +172,6 @@ bool isSafeInQuadrangle( Mat frame, int X_axis, int Y_axis )
     && Y_axis > p1.y && Y_axis < p4.y ) {
     printf("It is inside the parallelogram! \a\n");
     return 0;
-  } else 
+  } else
     return 1;
 }
